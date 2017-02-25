@@ -16,6 +16,8 @@ typedef struct CHUNK CHUNK;
 struct CHUNK
 {
     BYTE chId[4];
+    DWORD contentSize;
+    DWORD sizeOfChilds;
     std::vector<CHUNK*> childs;
 };
 

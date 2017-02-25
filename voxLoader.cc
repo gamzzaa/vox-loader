@@ -4,8 +4,7 @@
 
 VoxLoader::VoxLoader(const std::string& voxFile)
 {
-    std::cout << "File " << voxFile << " loaded." << std::endl;
-    std::cout << "Vox size " << sizeof(vox) << std::endl;
+    std::cout << "Loading " << voxFile << " file." << std::endl;
 
     std::ifstream file(voxFile, std::ios::in|std::ios::binary|std::ios::ate);
     if (file.is_open())
@@ -33,7 +32,13 @@ VoxLoader::VoxLoader(const std::string& voxFile)
     {
         vox.main = new CHUNK;
         file.read((char*)vox.main->chId, 4);
-        std::cout << "Main chunk " << vox.main->chId << std::endl;
+        file.read((char*)&vox.main->contentSize, 4);
+        file.read((char*)&vox.main->sizeOfChilds, 4);
+
+        std::cout << "Main chunk " << vox.main->chId
+                  << ", content size = " << vox.main->contentSize << "B"
+                  << ", childs size = " << vox.main->sizeOfChilds << "B"
+                  << std::endl;
     }
 
     file.close();
