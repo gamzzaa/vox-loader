@@ -11,7 +11,7 @@ VoxLoader::VoxLoader(const std::string& voxFile)
     if (file.is_open())
     {
         file.seekg (0, std::ios::beg);
-        file.read (vox.header, 4);
+        file.read ((char*)vox.header, 4);
         file.read((char*)&vox.version, sizeof(int));
         file.close();
 
