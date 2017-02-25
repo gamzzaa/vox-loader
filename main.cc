@@ -3,6 +3,6 @@
 
 int main()
 {
-    VoxLoader vox(std::string("monu1.vox"));
+    VoxLoader vox(std::string("sample/monu1.vox"));
     return 0;
 }
