@@ -4,6 +4,7 @@
  * author: Marcin Borowiec
 */
 #include <string>
+#include <vector>
 
 #ifndef VOX_LOADER_H_
 #define VOX_LOADER_H_
@@ -11,16 +12,18 @@
 typedef unsigned char BYTE;
 typedef unsigned int DWORD;
 
-typedef struct
+typedef struct CHUNK CHUNK;
+struct CHUNK
 {
     BYTE chId[4];
-
-} Chunk;
+    std::vector<CHUNK*> childs;
+};
 
 typedef struct
 {
     BYTE header[4];
     DWORD version;
+    CHUNK* main;
 } Vox;
 
 class VoxLoader
