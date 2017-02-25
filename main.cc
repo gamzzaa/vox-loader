@@ -3,6 +3,6 @@
 
 int main()
 {
-    VoxLoader vox(std::string("/path/to/vox/file.vox"));
+    VoxLoader vox(std::string("monu1.vox"));
     return 0;
 }
