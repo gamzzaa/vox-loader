@@ -10,8 +10,8 @@ VoxLoader::VoxLoader(const std::string& voxFile)
     if (file.is_open())
     {
         file.seekg(0, std::ios::beg);
-        file.read((char*)vox.header, 4);
-        file.read((char*)&vox.version, sizeof(int));
+        file.read(reinterpret_cast<char *>(vox.header), 4);
+        file.read(reinterpret_cast<char *>(&vox.version), sizeof(int));
 
         std::cout << "The header is loaded." << std::endl;
     }
@@ -31,9 +31,9 @@ VoxLoader::VoxLoader(const std::string& voxFile)
     if (file.is_open())
     {
         vox.main = new CHUNK;
-        file.read((char*)vox.main->chId, 4);
-        file.read((char*)&vox.main->contentSize, 4);
-        file.read((char*)&vox.main->sizeOfChilds, 4);
+        file.read(reinterpret_cast<char *>(vox.main->chId), 4);
+        file.read(reinterpret_cast<char *>(&vox.main->contentSize), 4);
+        file.read(reinterpret_cast<char *>(&vox.main->sizeOfChilds), 4);
 
         std::cout << "Main chunk " << vox.main->chId
                   << ", content size = " << vox.main->contentSize << "B"
@@ -42,7 +42,7 @@ VoxLoader::VoxLoader(const std::string& voxFile)
 
         CHUNK* size = new CHUNK;
         vox.main->childs.push_back(size);
-        file.read((char*)size->chId, 4);
+        file.read(reinterpret_cast<char *>(size->chId), 4);
 
         std::cout << "Child chunk " << vox.main->childs.at(0)->chId << std::endl;
     }
