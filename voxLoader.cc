@@ -27,7 +27,7 @@ VoxLoader::VoxLoader(const std::string& voxFile)
         // todo mborowiec: throw exception here
     }
 
-    // everything is good so far, read the rest of file
+    // everything is good so far, read the rest of the file
     if (file.is_open())
     {
         vox.main = new CHUNK;
@@ -39,6 +39,12 @@ VoxLoader::VoxLoader(const std::string& voxFile)
                   << ", content size = " << vox.main->contentSize << "B"
                   << ", childs size = " << vox.main->sizeOfChilds << "B"
                   << std::endl;
+
+        CHUNK* size = new CHUNK;
+        vox.main->childs.push_back(size);
+        file.read((char*)size->chId, 4);
+
+        std::cout << "Child chunk " << vox.main->childs.at(0)->chId << std::endl;
     }
 
     file.close();
