@@ -99,7 +99,7 @@ VoxLoader::VoxLoader(const std::string& voxFile)
         << ", voxels " << (static_cast<XYZI_CHUNK*>(vox.main->childs.at(1)))->numVoxels
         << ": "
         << std::endl;
-
+/*
         XYZI_CHUNK* xyzi_temp = static_cast<XYZI_CHUNK*>(vox.main->childs.at(1));
         for (VOXEL* vox : xyzi_temp->voxels)
         {
@@ -110,14 +110,17 @@ VoxLoader::VoxLoader(const std::string& voxFile)
             << ", colorIndex = " << vox->colorIndex
             << std::endl;
         }
+*/
+        CHUNK* rgba = new CHUNK;  // todo mborowiec: change type
+        vox.main->childs.push_back(rgba);
+        file.read(reinterpret_cast<char *>(rgba->chId), 4);
+        file.read(reinterpret_cast<char *>(&(rgba->contentSize)), 4);
+        file.read(reinterpret_cast<char *>(&(rgba->sizeOfChilds)), 4);
 
-/*
-        << ", x " << (static_cast<XYZI_CHUNK*>(vox.main->childs.at(1)))->x
-        << ", y " << (static_cast<XYZI_CHUNK*>(vox.main->childs.at(1)))->y
-        << ", z " << (static_cast<XYZI_CHUNK*>(vox.main->childs.at(1)))->z
-        << ", colorIndex " << (static_cast<XYZI_CHUNK*>(vox.main->childs.at(1)))->colorIndex
+        std::cout << "Child chunk " << vox.main->childs.at(2)->chId
+        << ", content size " << vox.main->childs.at(2)->contentSize << "B"
+        << ", size of childs " << vox.main->childs.at(2)->sizeOfChilds << "B"
         << std::endl;
-        */
     }
 
     file.close();
