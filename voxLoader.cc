@@ -43,8 +43,13 @@ VoxLoader::VoxLoader(const std::string& voxFile)
         CHUNK* size = new CHUNK;
         vox.main->childs.push_back(size);
         file.read(reinterpret_cast<char *>(size->chId), 4);
+        file.read(reinterpret_cast<char *>(&(size->contentSize)), 4);
+        file.read(reinterpret_cast<char *>(&(size->sizeOfChilds)), 4);
 
-        std::cout << "Child chunk " << vox.main->childs.at(0)->chId << std::endl;
+        std::cout << "Child chunk " << vox.main->childs.at(0)->chId
+        << ", content size " << vox.main->childs.at(0)->contentSize
+        << ", size of childs " << vox.main->childs.at(0)->sizeOfChilds
+        << std::endl;
     }
 
     file.close();

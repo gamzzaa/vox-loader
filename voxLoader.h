@@ -15,7 +15,7 @@ typedef unsigned int DWORD;
 typedef struct CHUNK CHUNK;
 struct CHUNK
 {
-    BYTE chId[4];
+    BYTE chId[5];
     DWORD contentSize;
     DWORD sizeOfChilds;
     std::vector<CHUNK*> childs;
