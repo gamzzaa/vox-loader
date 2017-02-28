@@ -21,6 +21,15 @@ struct CHUNK
     std::vector<CHUNK*> childs;
 };
 
+typedef struct SIZE_CHUNK SIZE_CHUNK;
+struct SIZE_CHUNK : CHUNK
+{
+    // content structure
+    DWORD x;
+    DWORD y;
+    DWORD z;
+};
+
 typedef struct
 {
     BYTE header[4];
