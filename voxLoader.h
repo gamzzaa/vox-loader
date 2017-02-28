@@ -12,6 +12,17 @@
 typedef unsigned char BYTE;
 typedef unsigned int DWORD;
 
+typedef struct VOXEL VOXEL;
+struct VOXEL
+{
+    DWORD x;
+    DWORD y;
+    DWORD z;
+    DWORD colorIndex;
+
+    VOXEL() { x = 0; y = 0; z = 0; colorIndex = 0; }
+};
+
 typedef struct CHUNK CHUNK;
 struct CHUNK
 {
@@ -24,11 +35,19 @@ struct CHUNK
 typedef struct SIZE_CHUNK SIZE_CHUNK;
 struct SIZE_CHUNK : CHUNK
 {
-    // content structure
-    DWORD x;
-    DWORD y;
-    DWORD z;
+    DWORD xSize;
+    DWORD ySize;
+    DWORD zSize;
 };
+
+typedef struct XYZI_CHUNK XYZI_CHUNK;
+struct XYZI_CHUNK : CHUNK
+{
+    DWORD numVoxels;
+    std::vector<VOXEL*> voxels;
+};
+
+
 
 typedef struct
 {
