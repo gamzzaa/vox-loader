@@ -53,7 +53,7 @@ VoxLoader::VoxLoader(const std::string& voxFile)
         //  |- ...
         //  |
 
-        SIZE_CHUNK* size = new SIZE_CHUNK;  // todo mborowiec: change type
+        Size* size = new Size;  // todo mborowiec: change type
         vox.main->childs.push_back(size);
         file.read(reinterpret_cast<char *>(size->chId), 4);
         file.read(reinterpret_cast<char *>(&(size->contentSize)), 4);
@@ -70,12 +70,12 @@ VoxLoader::VoxLoader(const std::string& voxFile)
         std::cout << "Child chunk " << vox.main->childs.at(0)->chId
         << ", content size " << vox.main->childs.at(0)->contentSize << "B"
         << ", size of childs " << vox.main->childs.at(0)->sizeOfChilds << "B"
-        << ", x " << (static_cast<SIZE_CHUNK*>(vox.main->childs.at(0)))->xSize
-        << ", y " << (static_cast<SIZE_CHUNK*>(vox.main->childs.at(0)))->ySize
-        << ", z " << (static_cast<SIZE_CHUNK*>(vox.main->childs.at(0)))->zSize
+        << ", x " << (static_cast<Size*>(vox.main->childs.at(0)))->xSize
+        << ", y " << (static_cast<Size*>(vox.main->childs.at(0)))->ySize
+        << ", z " << (static_cast<Size*>(vox.main->childs.at(0)))->zSize
         << std::endl;
 
-        XYZI_CHUNK* xyzi = new XYZI_CHUNK;
+        Xyzi* xyzi = new Xyzi;
         vox.main->childs.push_back(xyzi);
         file.read(reinterpret_cast<char *>(xyzi->chId), 4);
         file.read(reinterpret_cast<char *>(&(xyzi->contentSize)), 4);
@@ -87,7 +87,7 @@ VoxLoader::VoxLoader(const std::string& voxFile)
 
             for (unsigned int i = 0; i < xyzi->numVoxels; i++)
             {
-                VOXEL* voxel = new VOXEL;
+                Voxel* voxel = new Voxel;
                 file.read(reinterpret_cast<char *>(&voxel->x), 1);
                 file.read(reinterpret_cast<char *>(&voxel->y), 1);
                 file.read(reinterpret_cast<char *>(&voxel->z), 1);
@@ -109,11 +109,11 @@ VoxLoader::VoxLoader(const std::string& voxFile)
         std::cout << "Child chunk " << vox.main->childs.at(1)->chId
         << ", content size " << vox.main->childs.at(1)->contentSize << "B"
         << ", size of childs " << vox.main->childs.at(1)->sizeOfChilds << "B"
-        << ", voxels " << (static_cast<XYZI_CHUNK*>(vox.main->childs.at(1)))->numVoxels
+        << ", voxels " << (static_cast<Xyzi*>(vox.main->childs.at(1)))->numVoxels
         << ": "
         << std::endl;
 /*
-        XYZI_CHUNK* xyzi_temp = static_cast<XYZI_CHUNK*>(vox.main->childs.at(1));
+        Xyzi* xyzi_temp = static_cast<Xyzi*>(vox.main->childs.at(1));
         for (VOXEL* vox : xyzi_temp->voxels)
         {
             std::cout
@@ -134,7 +134,7 @@ VoxLoader::VoxLoader(const std::string& voxFile)
         for (unsigned int i = 0; i < rgba->contentSize / 4; i++)
         {
             file.read((char*)&color, 4);
-            swap_bytes(color);
+            SwapBytes(color);
             //std::cout << i + 1 << " " << std::hex << color << std::dec << std::endl;
         }
 
@@ -161,7 +161,7 @@ VoxLoader::VoxLoader(const std::string& voxFile)
 
 VoxLoader::~VoxLoader() {}
 
-void swap_bytes(unsigned int& x)
+void SwapBytes(unsigned int& x)
 {
     uint16_t *a = reinterpret_cast<uint16_t*>(&x);
     *(a+0) ^= *(a+1) ^= *(a+0) ^= *(a+1);

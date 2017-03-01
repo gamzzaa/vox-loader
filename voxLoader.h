@@ -9,21 +9,21 @@
 #ifndef VOX_LOADER_H_
 #define VOX_LOADER_H_
 
-void swap_bytes(unsigned int& x);
+void SwapBytes(unsigned int& x);
 
 
 typedef unsigned char BYTE;
 typedef unsigned int DWORD;
 
-typedef struct VOXEL VOXEL;
-struct VOXEL
+typedef struct Voxel Voxel;
+struct Voxel
 {
     DWORD x;
     DWORD y;
     DWORD z;
     DWORD colorIndex;
 
-    VOXEL() { x = 0; y = 0; z = 0; colorIndex = 0; }
+    Voxel() { x = 0; y = 0; z = 0; colorIndex = 0; }
 };
 
 typedef struct CHUNK CHUNK;
@@ -35,19 +35,19 @@ struct CHUNK
     std::vector<CHUNK*> childs;
 };
 
-typedef struct SIZE_CHUNK SIZE_CHUNK;
-struct SIZE_CHUNK : CHUNK
+typedef struct Size Size;
+struct Size : CHUNK
 {
     DWORD xSize;
     DWORD ySize;
     DWORD zSize;
 };
 
-typedef struct XYZI_CHUNK XYZI_CHUNK;
-struct XYZI_CHUNK : CHUNK
+typedef struct Xyzi Xyzi;
+struct Xyzi : CHUNK
 {
     DWORD numVoxels;
-    std::vector<VOXEL*> voxels;
+    std::vector<Voxel*> voxels;
 };
 
 typedef struct RGBA_CHUNK RGBA_CHUNK;
