@@ -30,6 +30,7 @@ VoxLoader::VoxLoader(const std::string& voxFile)
     // everything is good so far, read the rest of the file
     if (file.is_open())
     {
+        // read main chunk
         vox.main = new CHUNK;
         file.read(reinterpret_cast<char *>(vox.main->chId), 4);
         file.read(reinterpret_cast<char *>(&vox.main->contentSize), 4);
@@ -39,6 +40,18 @@ VoxLoader::VoxLoader(const std::string& voxFile)
                   << ", content size = " << vox.main->contentSize << "B"
                   << ", childs size = " << vox.main->sizeOfChilds << "B"
                   << std::endl;
+
+        // skip content
+
+        // start reading child chunks
+        // MAIN
+        //  |
+        //  |- PACK
+        //  |
+        //  |- SIZE
+        //  |- XYZI
+        //  |- ...
+        //  |
 
         SIZE_CHUNK* size = new SIZE_CHUNK;  // todo mborowiec: change type
         vox.main->childs.push_back(size);
@@ -111,19 +124,49 @@ VoxLoader::VoxLoader(const std::string& voxFile)
             << std::endl;
         }
 */
-        CHUNK* rgba = new CHUNK;  // todo mborowiec: change type
+        RGBA_CHUNK* rgba = new RGBA_CHUNK;  // todo mborowiec: change type
         vox.main->childs.push_back(rgba);
         file.read(reinterpret_cast<char *>(rgba->chId), 4);
         file.read(reinterpret_cast<char *>(&(rgba->contentSize)), 4);
         file.read(reinterpret_cast<char *>(&(rgba->sizeOfChilds)), 4);
 
+        unsigned int color = 0;
+        for (unsigned int i = 0; i < rgba->contentSize / 4; i++)
+        {
+            file.read((char*)&color, 4);
+            swap_bytes(color);
+            //std::cout << i + 1 << " " << std::hex << color << std::dec << std::endl;
+        }
+
         std::cout << "Child chunk " << vox.main->childs.at(2)->chId
         << ", content size " << vox.main->childs.at(2)->contentSize << "B"
         << ", size of childs " << vox.main->childs.at(2)->sizeOfChilds << "B"
         << std::endl;
+
+        if (file.eof())
+            std::cout << "EOF" << std::endl;
+
+        CHUNK* chnk = new CHUNK;  // todo mborowiec: change type
+        //vox.main->childs.push_back(rgba);
+        file.read(reinterpret_cast<char *>(chnk->chId), 4);
+
+        std::cout << "Child chunk " << chnk->chId << std::endl;
+
+        if (file.eof())
+            std::cout << "EOF" << std::endl;
     }
 
     file.close();
 }
 
 VoxLoader::~VoxLoader() {}
+
+void swap_bytes(unsigned int& x)
+{
+    uint16_t *a = reinterpret_cast<uint16_t*>(&x);
+    *(a+0) ^= *(a+1) ^= *(a+0) ^= *(a+1);
+    uint8_t *b = reinterpret_cast<uint8_t*>(a);
+    *(b+0) ^= *(b+1) ^= *(b+0) ^= *(b+1);
+    b = reinterpret_cast<uint8_t*>(a+1);
+    *(b+0) ^= *(b+1) ^= *(b+0) ^= *(b+1);
+}

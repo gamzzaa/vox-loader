@@ -9,6 +9,9 @@
 #ifndef VOX_LOADER_H_
 #define VOX_LOADER_H_
 
+void swap_bytes(unsigned int& x);
+
+
 typedef unsigned char BYTE;
 typedef unsigned int DWORD;
 
@@ -47,7 +50,11 @@ struct XYZI_CHUNK : CHUNK
     std::vector<VOXEL*> voxels;
 };
 
-
+typedef struct RGBA_CHUNK RGBA_CHUNK;
+struct RGBA_CHUNK : CHUNK
+{
+    std::vector<DWORD> palette;
+};
 
 typedef struct
 {
