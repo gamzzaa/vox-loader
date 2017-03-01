@@ -2,11 +2,11 @@
 #include <fstream>
 #include "voxLoader.h"
 
-VoxLoader::VoxLoader(const std::string& voxFile)
+VoxLoader::VoxLoader(const std::string& filename)
 {
-    std::cout << "Loading " << voxFile << " file." << std::endl;
+    std::cout << "Loading " << filename << " file." << std::endl;
 
-    std::ifstream file(voxFile, std::ios::in|std::ios::binary|std::ios::ate);
+    std::ifstream file(filename, std::ios::in|std::ios::binary|std::ios::ate);
     if (file.is_open())
     {
         file.seekg(0, std::ios::beg);
@@ -16,6 +16,7 @@ VoxLoader::VoxLoader(const std::string& voxFile)
         std::cout << "The header is loaded." << std::endl;
     }
 
+    CheckHeader(vox.header);
     if (vox.header[0] == 'V' && vox.header[1] == 'O' && vox.header[2] == 'X' &&
         vox.header[3] == ' ')
     {
@@ -169,4 +170,16 @@ void SwapBytes(unsigned int& x)
     *(b+0) ^= *(b+1) ^= *(b+0) ^= *(b+1);
     b = reinterpret_cast<uint8_t*>(a+1);
     *(b+0) ^= *(b+1) ^= *(b+0) ^= *(b+1);
+}
+
+bool CheckHeader(BYTE* header)
+{
+    if (header[0] == 'V' && header[1] == 'O' && header[2] == 'X' &&
+        header[3] == ' ')
+    {
+        std::cout << "Vox file..." << std::endl;
+        return true;
+    }
+
+    return false;
 }

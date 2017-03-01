@@ -9,11 +9,12 @@
 #ifndef VOX_LOADER_H_
 #define VOX_LOADER_H_
 
-void SwapBytes(unsigned int& x);
-
-
 typedef unsigned char BYTE;
 typedef unsigned int DWORD;
+
+void SwapBytes(unsigned int& x);
+bool CheckHeader(BYTE* header);
+
 
 typedef struct Voxel Voxel;
 struct Voxel
@@ -66,7 +67,7 @@ typedef struct
 class VoxLoader
 {
 public:
-    VoxLoader(const std::string& voxFile);
+    VoxLoader(const std::string& filename);
     ~VoxLoader();
 
 private:
