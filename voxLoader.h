@@ -57,11 +57,14 @@ struct RGBA_CHUNK : CHUNK
     std::vector<DWORD> palette;
 };
 
+typedef std::pair<Size*,Xyzi*> Model;
+
 typedef struct
 {
     BYTE header[4];
     DWORD version;
     CHUNK* main;
+    std::vector<Model> models;
 } Vox;
 
 class VoxLoader
